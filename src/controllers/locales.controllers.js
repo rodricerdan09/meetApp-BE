@@ -55,7 +55,7 @@ localesController.update = (req, res) => {
 }
 
 localesController.delete = (req, res) => {
-    let localID=parseInt(req.params.id;
+    let localID=parseInt(req.params.id);
     let success1={
             msg: `Local de id:${localID} eliminado` , 
             status: "success 1"
@@ -65,7 +65,7 @@ localesController.delete = (req, res) => {
     //.then(result => res.sendStatus(204))
     .then(result => res.status(200).json(success1))
     .catch(error => res.status(412).json({msg: error.message}));
-} */
+} 
 
 module.exports=localesController;
 
