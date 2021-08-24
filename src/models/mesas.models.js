@@ -42,7 +42,7 @@ var Mesas = sequelize.define('mesas',{
             }
         }     
     },
-    localId: {type: Sequelize.INTEGER}
+    localeId: {type: Sequelize.INTEGER}
 });
 Mesas.belongsTo(Locales)
 
@@ -50,5 +50,5 @@ Mesas.belongsTo(Locales)
 como segundo parámetro un objeto donde ponemos los atributos de nuestra tabla, donde 
 podemos especificar que tipo de dato va representar este campo.*/
 
-module.exports=Locales;
+module.exports=Mesas;
 
