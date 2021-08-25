@@ -31,6 +31,9 @@ app.use('/api', categoriasRoute);
 //mesas
 const mesasRoute = require('./src/routes/mesas.routes.js');
 app.use('/api', mesasRoute);
+//mesas
+const comensalesRoute = require('./src/routes/comensales.routes.js');
+app.use('/api', comensalesRoute);
 
 
 
