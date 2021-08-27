@@ -3,52 +3,64 @@
 var Sequelize = require('sequelize');
 // importing connection database
 var sequelize = require('../db/db.js');
-var Locales = require('./locales.models.js');
 
-var Mesas = sequelize.define('mesas',{ 
+var Comensales = sequelize.define('comensales',{ 
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true 
     },  
-    numero:{
-        type: Sequelize.INTEGER(3),
+    correo:{
+        type: Sequelize.STRING(50),
     
         allowNull: {
             args:[false],
-            msg:'No se permite nombre nulo'
+            msg:'No se permite correo nulo'
         },
         validate:{
             notEmpty:{
                 args:[true],
-                msg:"Debe indicar el numero de la mesa"
+                msg:"Debe indicar el correo del comensal"
             }
         }     
     },
-    disponible:{
-        type: Sequelize.BOOLEAN    
-    },
-    capacidad:{
-        type: Sequelize.INTEGER(3),
+    nombre:{
+        type: Sequelize.STRING(50),
     
         allowNull: {
             args:[false],
-            msg:'No se permite nombre nulo'
+            msg:'No se permite nombre comensal nulo'
         },
         validate:{
             notEmpty:{
                 args:[true],
-                msg:"Debe completar la capacidad de la mesa"
+                msg:"Debe indicar el nombre del comensal"
             }
         }     
     },
-    localeId: {type: Sequelize.INTEGER}
+    fotoUrl:{
+        type: Sequelize.STRING(100),
+    
+        allowNull: {
+            args:[false],
+            msg:'No se permite url foto nulo'
+        },
+        validate:{
+            notEmpty:{
+                args:[true],
+                msg:"Debe indicar la url de la foto del comensal"
+            }
+        }     
+    },
+    telefono:{
+        type: Sequelize.STRING(15)        
+    }
+    
 });
-Locales.hasMany(Mesas)
 
 /* el método define() recibe como primer parámetro el nombre de la base de datos, 
 como segundo parámetro un objeto donde ponemos los atributos de nuestra tabla, donde 
 podemos especificar que tipo de dato va representar este campo.*/
 
-module.exports=Mesas;
+module.exports=Comensales;
 

@@ -1,6 +1,6 @@
 //import sequelize
 var Sequelize = require('sequelize');
-const route = require('../routes/locales.routes.js');
+const route = require('../routes/mesas.routes.js');
 // import model
 var Mesas= require('../models/mesas.models.js');
 var Locales= require('../models/locales.models.js');

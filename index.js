@@ -22,12 +22,22 @@ app.use((req, res, next) => {
 });
 
 //imports routes 
-//empresas
+//locales
 const localesRoute = require('./src/routes/locales.routes.js');
 app.use('/api', localesRoute);
-//ventas
-//const ventasRoute= require('./src/routes/ventas.routes.js');
-//app.use('/api',ventasRoute);
+//categorias
+const categoriasRoute = require('./src/routes/categorias.routes.js');
+app.use('/api', categoriasRoute);
+//mesas
+const mesasRoute = require('./src/routes/mesas.routes.js');
+app.use('/api', mesasRoute);
+//mesas
+const comensalesRoute = require('./src/routes/comensales.routes.js');
+app.use('/api', comensalesRoute);
+//reservas
+const reservasRoute = require('./src/routes/reservas.routes.js');
+app.use('/api', reservasRoute);
+
 
 
 //Run Server

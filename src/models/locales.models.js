@@ -3,7 +3,7 @@
 var Sequelize = require('sequelize');
 // importing connection database
 var sequelize = require('../db/db.js');
-
+var Categorias = require('./categorias.models.js');
 
 var Locales = sequelize.define('locales',{ 
     id: {
@@ -92,8 +92,10 @@ var Locales = sequelize.define('locales',{
             }    
         }
     },
+    categoriaId: {type: Sequelize.INTEGER}
    //id gerente
 });
+Categorias.hasMany(Locales);
 
 /* el método define() recibe como primer parámetro el nombre de la base de datos, 
 como segundo parámetro un objeto donde ponemos los atributos de nuestra tabla, donde 
