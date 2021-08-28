@@ -48,7 +48,7 @@ localesController.update = (req, res) => {
     let localID=parseInt(req.params.id);
     Locales.findByPk(localID)
     .then(locales=>{
-            Locales.update( localesBody)
+            Locales.update( LocalesBody)
             .then(local => res.json(local));
         }
         ).catch(error =>res.status(412).json({msg: error.message}));

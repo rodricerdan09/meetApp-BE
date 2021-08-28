@@ -1,9 +1,36 @@
+//DOTENV https://manage.auth0.com/dashboard/us/dev-conrado/rules/new
+var dotenv = require('dotenv');
+dotenv.config();
+
 //Server generated
 const express = require('express');
 const morgan = require('morgan');
 
-//imports models
-//var Locales = require('./src/models/locales.models.js');
+//JWT
+const jwt = require('express-jwt');
+const jwtAuthz = require('express-jwt-authz');
+const jwksRsa = require('jwks-rsa');
+
+// Authorization middleware. When used, the
+// Access Token must exist and be verified against
+// the Auth0 JSON Web Key Set
+const checkJwt = jwt({
+  // Dynamically provide a signing key
+  // based on the kid in the header and 
+  // the signing keys provided by the JWKS endpoint.
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://dev-conrado.us.auth0.com/.well-known/jwks.json`
+  }),
+
+  // Validate the audience and the issuer.
+  audience: 'http://localhost:5000',
+  issuer: [`https://dev-conrado.us.auth0.com/`],
+  algorithms: ['RS256']
+});
+
 
 
 //cors
@@ -21,6 +48,23 @@ app.use((req, res, next) => {
     next();
 });
 
+
+//imports routes 
+//empresas
+
+// This route needs authentication
+app.get('/api/private', checkJwt,async(req, res) =>{ 
+    
+    let user=req.user
+    let email= user['https://example.com/email']
+    let name= user['https://example.com/name']
+    let picture= user['https://example.com/picture']
+    console.log(email+" "+name+" "+picture)
+    res.json({message: 'Hello from a private endpoint! You need to be authenticated to see this.'})}
+);
+app.get('/api/public', (req, res) => 
+    res.json({message: 'Hello from a public endpoint!'})
+);
 //imports routes 
 //locales
 const localesRoute = require('./src/routes/locales.routes.js');
@@ -39,7 +83,6 @@ const reservasRoute = require('./src/routes/reservas.routes.js');
 app.use('/api', reservasRoute);
 
 
-
 //Run Server
 var Port = process.env.PORT || 5000;
 var IP = process.env.IP || '127.0.0.1';
@@ -50,3 +93,5 @@ app.listen(Port, IP, (err) => {
        console.log(`Server running at http://${IP}:${Port}/`);
     }
 });
+
+//https://github.com/auth0-blog/auth0-express-js-sample/blob/main/src/messages/messages.service.js
