@@ -14,14 +14,12 @@ const db= new Sequelize({
   dialect: 'mysql',
 }); */
 
-
 db.sync({force: false}) //false para produccion
     .then(()=>console.log('database is connected'))
     .catch((error)=>console.log("error: ${error}"));  
 
 //end database connection.
 module.exports= db;
-
 
 /*  New Sequelize crea una nueva instancia de esta clase que recibe como 
 parámetros en su constructor, el nombre de la base de datos, el nombre del 
