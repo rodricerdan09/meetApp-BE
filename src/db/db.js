@@ -15,7 +15,7 @@ const db= new Sequelize({
 }); */
 
 
-db.sync({force:false}) //false para produccion
+db.sync({force: false}) //false para produccion
     .then(()=>console.log('database is connected'))
     .catch((error)=>console.log("error: ${error}"));  
 

@@ -13,7 +13,6 @@ var Mesas = sequelize.define('mesas',{
     },  
     numero:{
         type: Sequelize.INTEGER(3),
-    
         allowNull: {
             args:[false],
             msg:'No se permite nombre nulo'
@@ -29,8 +28,7 @@ var Mesas = sequelize.define('mesas',{
         type: Sequelize.BOOLEAN    
     },
     capacidad:{
-        type: Sequelize.INTEGER(3),
-    
+        type: Sequelize.INTEGER(3),  
         allowNull: {
             args:[false],
             msg:'No se permite nombre nulo'
@@ -42,7 +40,16 @@ var Mesas = sequelize.define('mesas',{
             }
         }     
     },
-    localeId: {type: Sequelize.INTEGER}
+    piso:{
+        type: Sequelize.INTEGER(3),
+    },
+    fila_mesa:{
+        type: Sequelize.INTEGER(3),
+    },
+    columna_mesa:{
+        type: Sequelize.INTEGER(3),
+    },
+    localId: {type: Sequelize.INTEGER}
 });
 Locales.hasMany(Mesas)
 

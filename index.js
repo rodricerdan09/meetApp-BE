@@ -31,8 +31,6 @@ const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
-
-
 //cors
 var cors = require('cors');
 var app = express();
@@ -48,19 +46,24 @@ app.use((req, res, next) => {
     next();
 });
 
-
-//imports routes 
-//empresas
+//imports model 
+const Comensales = require('./src/models/comensales.models');
 
 // This route needs authentication
-app.get('/api/private', checkJwt,async(req, res) =>{ 
-    
-    let user=req.user
-    let email= user['https://example.com/email']
-    let name= user['https://example.com/name']
-    let picture= user['https://example.com/picture']
-    console.log(email+" "+name+" "+picture)
-    res.json({message: 'Hello from a private endpoint! You need to be authenticated to see this.'})}
+app.get('/api/private', checkJwt, async(req, res) =>{     
+    let user= req.user
+    let correo= user['https://example.com/email']
+    let nombre= user['https://example.com/name']
+    let fotoUrl= user['https://example.com/picture']
+    let comensalBody= {correo, nombre, fotoUrl}
+
+    Comensales.create(comensalBody)
+    .then((comensal)=>res.json({message: 'Hello from a private endpoint! You need to be authenticated to see this.'}))
+    .catch((error)=>res.status(400).json({msg: error.message}))
+
+    // console.log(email+" "+name+" "+picture)
+    // res.json({message: 'Hello from a private endpoint! You need to be authenticated to see this.'})
+    }
 );
 app.get('/api/public', (req, res) => 
     res.json({message: 'Hello from a public endpoint!'})
@@ -81,7 +84,6 @@ app.use('/api', comensalesRoute);
 //reservas
 const reservasRoute = require('./src/routes/reservas.routes.js');
 app.use('/api', reservasRoute);
-
 
 //Run Server
 var Port = process.env.PORT || 5000;

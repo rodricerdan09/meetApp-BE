@@ -19,19 +19,22 @@ mesasController.list = (req, res) => {
 
 mesasController.create = (req, res) => {
     let mesasBody={
-        numero: req.body.nombre,
-        disponible: req.body.tipo, 
+        numero: req.body.numero,
+        disponible: req.body.disponible,
+        piso:req.body.piso,
         capacidad: req.body.capacidad,
+        fila: req.body.fila_mesa,
+        columna: req.body.columna_mesa,
         localId: req.body.localId
     };
-    Locales.create(localesBody)
+    Mesas.create(mesasBody)
         .then(mesas=>res.json(mesas))
         .catch(error=>res.status(400).json({msg: error.message}));
 }
 
 mesasController.read = (req, res) => {
     let mesaID=parseInt(req.params.id);
-    Locales.findByPk(mesaID, 
+    Mesas.findByPk(mesaID, 
         { attributes: ['id','numero', 'disponible', 'capacidad', 'localId'] })
     .then(mesas => res.json(mesas))
     .catch(error =>res.status(412).json({msg: error.message}));

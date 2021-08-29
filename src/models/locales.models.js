@@ -24,22 +24,6 @@ var Locales = sequelize.define('locales',{
                 msg:"Debe completar la denominación o nombre de la empresa"
             }
         }
-            
-        
-    },
-    tipo:{
-        type: Sequelize.STRING(20),
-        allowNull: {
-            args:[false],// No se permite nulo
-            msg:'No se permite tipo nulo'
-        },
-        validate:{
-            notEmpty:{
-                args:[true],
-                msg:"Debe completar el tipo al que pertenece la empresa"
-            }
-        }
-
     },
     direccion:{
         type: Sequelize.STRING(50),
@@ -53,9 +37,7 @@ var Locales = sequelize.define('locales',{
                 args:[true],
                 msg:"Debe completar la direccion de la empresa"
             }
-        }
-            
-        
+        }     
     },
     capacidad: {
         type: Sequelize.BIGINT(3), 
@@ -65,7 +47,7 @@ var Locales = sequelize.define('locales',{
                 msg: "El número de aforo no puede ser menor a lo admitido "
               },                  
             max: {
-                args: [99],
+                args: [999],
                 msg: "El número de aforo no puede ser mayor a lo admitido"
               },
             isInt:{
@@ -74,16 +56,15 @@ var Locales = sequelize.define('locales',{
             }    
         }
     },
-
     aforo: {
         type: Sequelize.BIGINT(3), //20383170959
         validate:{
             min: {
                 args: [1],
-                msg: "El número de aforo no puede ser menor a lo admitido "
+                msg: "El número de aforo no puede ser menor a lo admitido"
               },                  
             max: {
-                args: [99],
+                args: [999],
                 msg: "El número de aforo no puede ser mayor a lo admitido"
               },
             isInt:{
@@ -92,10 +73,12 @@ var Locales = sequelize.define('locales',{
             }    
         }
     },
-    categoriaId: {type: Sequelize.INTEGER}
+    // categoriaId: {type: Sequelize.INTEGER}
    //id gerente
 });
-Categorias.hasMany(Locales);
+Categorias.hasOne(Locales);
+// Locales.hasOne(Categorias);
+// Categorias.hasMany(Locales);
 
 /* el método define() recibe como primer parámetro el nombre de la base de datos, 
 como segundo parámetro un objeto donde ponemos los atributos de nuestra tabla, donde 

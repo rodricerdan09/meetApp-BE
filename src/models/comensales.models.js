@@ -12,7 +12,6 @@ var Comensales = sequelize.define('comensales',{
     },  
     correo:{
         type: Sequelize.STRING(50),
-    
         allowNull: {
             args:[false],
             msg:'No se permite correo nulo'
@@ -26,7 +25,6 @@ var Comensales = sequelize.define('comensales',{
     },
     nombre:{
         type: Sequelize.STRING(50),
-    
         allowNull: {
             args:[false],
             msg:'No se permite nombre comensal nulo'
@@ -40,7 +38,6 @@ var Comensales = sequelize.define('comensales',{
     },
     fotoUrl:{
         type: Sequelize.STRING(100),
-    
         allowNull: {
             args:[false],
             msg:'No se permite url foto nulo'
@@ -55,7 +52,6 @@ var Comensales = sequelize.define('comensales',{
     telefono:{
         type: Sequelize.STRING(15)        
     }
-    
 });
 
 /* el método define() recibe como primer parámetro el nombre de la base de datos, 

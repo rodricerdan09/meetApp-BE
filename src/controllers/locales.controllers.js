@@ -3,6 +3,7 @@ var Sequelize = require('sequelize');
 const route = require('../routes/locales.routes.js');
 // import model
 var Locales= require('../models/locales.models.js');
+var Categorias= require('../models/categorias.models.js');
 
 const localesController={};
 
@@ -11,7 +12,17 @@ localesController.index=(req, res) => {
 }
 
 localesController.list = (req, res) => {
-    Locales.findAll({ attributes: ['id','nombre', 'tipo','direccion', 'capacidad','aforo'] })
+    let query=req.query;
+    Locales.findAll({ 
+        attributes: ['id','nombre','direccion', 'capacidad','aforo'],
+        where: query,
+        include: [
+            {
+                model: Categorias, as: 'categorias',
+                attributes: [['nombre', 'categoria']]
+            },
+        ]
+    })
     .then(locales => res.json(locales))
     .catch(error =>  res.status(412).json({msg: error.message}));
 }

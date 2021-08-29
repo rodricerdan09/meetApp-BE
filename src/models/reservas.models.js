@@ -13,14 +13,12 @@ var Reservas = sequelize.define('reservas',{
     },  
     fecha:{
         type: Sequelize.DATE,
-
         allowNull: {
             args:[false],
             msg:'No se permite fecha reserva nulo'
         }                    
     },
-    
-    comensaleId: {type: Sequelize.INTEGER}    
+    comensalId: {type: Sequelize.INTEGER}    
    //ID ESTADO RESERVA 
 });
 
