@@ -20,7 +20,7 @@
     "passport": "^0.4.1",
     "passport-auth0": "^1.4.0",
     "sequelize": "^6.6.2",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^4.2.0"
   },
   "devDependencies": {
     "morgan": "^1.10.0",

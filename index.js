@@ -1,46 +1,32 @@
 //DOTENV https://manage.auth0.com/dashboard/us/dev-conrado/rules/new
-var dotenv = require('dotenv');
-dotenv.config();
+
 
 //Server generated
 const express = require('express');
 const morgan = require('morgan');
 
 //JWT
-const jwt = require('express-jwt');
-const jwtAuthz = require('express-jwt-authz');
-const jwksRsa = require('jwks-rsa');
+const checkJwt =require('./src/auth/auth.js');
 
-// Authorization middleware. When used, the
-// Access Token must exist and be verified against
-// the Auth0 JSON Web Key Set
-const checkJwt = jwt({
-  // Dynamically provide a signing key
-  // based on the kid in the header and 
-  // the signing keys provided by the JWKS endpoint.
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `https://dev-conrado.us.auth0.com/.well-known/jwks.json`
-  }),
-
-  // Validate the audience and the issuer.
-  audience: 'http://localhost:5000',
-  issuer: [`https://dev-conrado.us.auth0.com/`],
-  algorithms: ['RS256']
-});
 
 //cors
-var cors = require('cors');
-var app = express();
+let cors = require('cors');
+let app = express();
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors());
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type,Content-Type:application/json, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Headers', 
+        "Authorization,\
+         X-API-KEY,\
+         Origin,\
+         X-Requested-With,\
+         Content-Type,\
+         Content-Type:application/json,\
+         Accept,\
+         Access-Control-Allow-Request-Method");
     res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE');
     res.header('Allow', 'GET, POST, PATCH, PUT, DELETE');
     next();
@@ -86,8 +72,8 @@ const reservasRoute = require('./src/routes/reservas.routes.js');
 app.use('/api', reservasRoute);
 
 //Run Server
-var Port = process.env.PORT || 5000;
-var IP = process.env.IP || '127.0.0.1';
+let Port = process.env.PORT || 5000;
+let IP = process.env.IP || '127.0.0.1';
 app.listen(Port, IP, (err) => {
     if (err) {
        console.log(err)
