@@ -32,8 +32,8 @@ app.use((req, res, next) => {
     next();
 });
 
-//imports model 
-const Comensales = require('./src/models/comensales.models');
+
+/* const Comensales = require('./src/models/comensales.models');
 
 // This route needs authentication
 app.get('/api/private', checkJwt, async(req, res) =>{     
@@ -50,11 +50,14 @@ app.get('/api/private', checkJwt, async(req, res) =>{
     // console.log(email+" "+name+" "+picture)
     // res.json({message: 'Hello from a private endpoint! You need to be authenticated to see this.'})
     }
-);
+);  */
 app.get('/api/public', (req, res) => 
     res.json({message: 'Hello from a public endpoint!'})
 );
 //imports routes 
+//locales
+const usersRoute = require('./src/routes/users.routes.js');
+app.use('/api', usersRoute);
 //locales
 const localesRoute = require('./src/routes/locales.routes.js');
 app.use('/api', localesRoute);
@@ -64,7 +67,7 @@ app.use('/api', categoriasRoute);
 //mesas
 const mesasRoute = require('./src/routes/mesas.routes.js');
 app.use('/api', mesasRoute);
-//mesas
+//comensales
 const comensalesRoute = require('./src/routes/comensales.routes.js');
 app.use('/api', comensalesRoute);
 //reservas
