@@ -3,6 +3,8 @@ var Sequelize = require('sequelize');
 const route = require('../routes/reservas.routes.js');
 // import model
 var Reservas= require('../models/reservas.models.js');
+const Mesas = require('../models/mesas.models.js');
+const Estados = require('../models/estados.models.js');
 
 const reservasController={};
 
@@ -11,7 +13,12 @@ reservasController.index=(req, res) => {
 }
 
 reservasController.list = (req, res) => {
-    Reservas.findAll({ attributes: ['id','fecha', 'comensaleId'] })
+    Reservas.findAll({ include:
+        [
+            { model: Mesas },
+            { model: Estados }
+        ] 
+    })
     .then(reservas => res.json(reservas))
     .catch(error =>  res.status(412).json({msg: error.message}));
 }
@@ -19,7 +26,10 @@ reservasController.list = (req, res) => {
 reservasController.create = (req, res) => {
     let reservasBody={
         fecha: req.body.fecha,
-        comensaleId: req.body.comensaleId         
+        cantidad_reservada: req.body.cantidad_reservada,
+        mesaId: req.body.mesaId,
+        estadoId: req.body.estadoId
+        //comensaleId: req.body.comensaleId         
     };
     Reservas.create(reservasBody)
         .then(reservas=>res.json(reservas))

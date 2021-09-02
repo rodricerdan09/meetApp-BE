@@ -4,7 +4,7 @@ var Sequelize = require('sequelize');
 // importing connection database
 var sequelize = require('../db/db.js');
 
-var Categorias = sequelize.define('categorias',{ 
+var Estados = sequelize.define('estados',{ 
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -20,11 +20,11 @@ var Categorias = sequelize.define('categorias',{
         validate:{
             notEmpty:{
                 args:[true],
-                msg:"Debe completar la denominación o nombre de la categoria"
+                msg:"Debe completar la denominación o nombre del estado de la reserva"
             }
         }      
     }
 });
 
-module.exports=Categorias;
+module.exports=Estados;
 

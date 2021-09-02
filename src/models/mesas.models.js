@@ -48,10 +48,11 @@ var Mesas = sequelize.define('mesas',{
     },
     columna_mesa:{
         type: Sequelize.INTEGER(3),
-    },
-    localId: {type: Sequelize.INTEGER}
+    }
 });
-Locales.hasMany(Mesas)
+
+Locales.hasMany(Mesas);
+Mesas.belongsTo(Locales);
 
 /* el método define() recibe como primer parámetro el nombre de la base de datos, 
 como segundo parámetro un objeto donde ponemos los atributos de nuestra tabla, donde 

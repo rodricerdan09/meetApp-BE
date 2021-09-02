@@ -3,6 +3,7 @@ var Sequelize = require('sequelize');
 const route = require('../routes/categorias.routes.js');
 // import model
 var Categorias = require('../models/categorias.models.js');
+var Locales= require('../models/locales.models.js');
 
 const categoriasController={};
 
@@ -11,7 +12,7 @@ categoriasController.index=(req, res) => {
 }
 
 categoriasController.list = (req, res) => {
-    Categorias.findAll({ attributes: ['id','nombre'] })
+    Categorias.findAll({ include: Locales })
     .then(categorias => res.json(categorias))
     .catch(error =>  res.status(412).json({msg: error.message}));
 }
@@ -53,7 +54,7 @@ categoriasController.delete = (req, res) => {
             status: "success 1"
         };
     success1= JSON.stringify(success1);
-    Locales.destroy({where: {id: categoriaID}})
+    Categorias.destroy({where: {id: categoriaID}})
     //.then(result => res.sendStatus(204))
     .then(result => res.status(200).json(success1))
     .catch(error => res.status(412).json({msg: error.message}));

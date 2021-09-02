@@ -73,6 +73,9 @@ app.use('/api', comensalesRoute);
 //reservas
 const reservasRoute = require('./src/routes/reservas.routes.js');
 app.use('/api', reservasRoute);
+//estados reservas
+const estadosRoute = require('./src/routes/estados.routes.js');
+app.use('/api', estadosRoute);
 
 //Run Server
 let Port = process.env.PORT || 5000;

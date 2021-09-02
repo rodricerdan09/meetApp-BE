@@ -12,17 +12,7 @@ localesController.index=(req, res) => {
 }
 
 localesController.list = (req, res) => {
-    let query=req.query;
-    Locales.findAll({ 
-        attributes: ['id','nombre','direccion', 'capacidad','aforo'],
-        where: query,
-        include: [
-            {
-                model: Categorias, as: 'categorias',
-                attributes: [['nombre', 'categoria']]
-            },
-        ]
-    })
+    Locales.findAll({ include: Categorias })
     .then(locales => res.json(locales))
     .catch(error =>  res.status(412).json({msg: error.message}));
 }
@@ -33,7 +23,8 @@ localesController.create = (req, res) => {
         tipo: req.body.tipo, 
         direccion: req.body.direccion,
         capacidad: req.body.capacidad,
-        aforo: req.body.aforo
+        aforo: req.body.aforo,
+        categoriaId: req.body.categoriaId
     };
     Locales.create(localesBody)
         .then(locales=>res.json(locales))

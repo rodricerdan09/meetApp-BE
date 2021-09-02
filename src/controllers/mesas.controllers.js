@@ -12,7 +12,7 @@ mesasController.index=(req, res) => {
 }
 
 mesasController.list = (req, res) => {
-    Mesas.findAll({ attributes: ['id','numero', 'disponible', 'capacidad', 'localId'] })
+    Mesas.findAll({ include: Locales })
     .then(mesas => res.json(mesas))
     .catch(error =>  res.status(412).json({msg: error.message}));
 }
@@ -21,11 +21,11 @@ mesasController.create = (req, res) => {
     let mesasBody={
         numero: req.body.numero,
         disponible: req.body.disponible,
-        piso:req.body.piso,
         capacidad: req.body.capacidad,
-        fila: req.body.fila_mesa,
-        columna: req.body.columna_mesa,
-        localId: req.body.localId
+        piso: req.body.piso,
+        fila_mesa: req.body.fila_mesa,
+        columna_mesa: req.body.columna_mesa,
+        localeId: req.body.localeId
     };
     Mesas.create(mesasBody)
         .then(mesas=>res.json(mesas))

@@ -3,7 +3,8 @@
 var Sequelize = require('sequelize');
 // importing connection database
 var sequelize = require('../db/db.js');
-var Comensales = require('./comensales.models.js');
+var Estados = require('./estados.models.js');
+var Mesas = require('./mesas.models.js');
 
 var Reservas = sequelize.define('reservas',{ 
     id: {
@@ -18,15 +19,28 @@ var Reservas = sequelize.define('reservas',{
             msg:'No se permite fecha reserva nulo'
         }                    
     },
-    comensalId: {type: Sequelize.INTEGER}    
-   //ID ESTADO RESERVA 
+    cantidad_reservada:{
+        type: Sequelize.INTEGER(3),
+        allowNull: {
+            args:[false],
+            msg:'No se permite cantidad nulo'
+        },
+        validate:{
+            notEmpty:{
+                args:[true],
+                msg:"Debe indicar el numero de acompañantes"
+            }
+        }     
+    }
+
+    //ID ESTADO RESERVA 
 });
 
-Comensales.hasMany(Reservas);
+Mesas.hasMany(Reservas);
+Reservas.belongsTo(Mesas);
 
-/* el método define() recibe como primer parámetro el nombre de la base de datos, 
-como segundo parámetro un objeto donde ponemos los atributos de nuestra tabla, donde 
-podemos especificar que tipo de dato va representar este campo.*/
+Estados.hasMany(Reservas);
+Reservas.belongsTo(Estados);
 
 module.exports=Reservas;
 
