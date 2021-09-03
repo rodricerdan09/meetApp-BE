@@ -76,9 +76,8 @@ var Locales = sequelize.define('locales',{
     // categoriaId: {type: Sequelize.INTEGER}
    //id gerente
 });
-Categorias.hasOne(Locales);
-// Locales.hasOne(Categorias);
-// Categorias.hasMany(Locales);
+Locales.belongsTo(Categorias,{as:'categorias'});
+
 
 /* el método define() recibe como primer parámetro el nombre de la base de datos, 
 como segundo parámetro un objeto donde ponemos los atributos de nuestra tabla, donde 

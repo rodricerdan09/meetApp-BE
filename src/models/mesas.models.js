@@ -49,7 +49,7 @@ var Mesas = sequelize.define('mesas',{
     columna_mesa:{
         type: Sequelize.INTEGER(3),
     },
-    localId: {type: Sequelize.INTEGER}
+    
 });
 Locales.hasMany(Mesas)
 

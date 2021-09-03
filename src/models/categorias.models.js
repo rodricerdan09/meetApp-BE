@@ -3,7 +3,7 @@
 var Sequelize = require('sequelize');
 // importing connection database
 var sequelize = require('../db/db.js');
-var Locales = require('./locales.models.js');
+
 
 var Categorias = sequelize.define('categorias',{ 
     id: {

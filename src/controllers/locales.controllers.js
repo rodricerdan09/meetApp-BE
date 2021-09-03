@@ -43,7 +43,7 @@ localesController.create = (req, res) => {
 localesController.read = (req, res) => {
     let localID=parseInt(req.params.id);
     Locales.findByPk(localID, 
-        { attributes: ['id','nombre', 'tipo','direccion', 'capacidad','aforo'] })
+        { attributes: ['id','nombre','direccion', 'capacidad','aforo'] })
     .then(locales => res.json(locales))
     .catch(error =>res.status(412).json({msg: error.message}));
 }
@@ -51,7 +51,6 @@ localesController.read = (req, res) => {
 localesController.update = (req, res) => {
     let localesBody={
         nombre: req.body.nombre,
-        tipo: req.body.tipo, 
         direccion: req.body.direccion,
         capacidad: req.body.capacidad,
         aforo: req.body.aforo
