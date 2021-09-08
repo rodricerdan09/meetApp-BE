@@ -36,8 +36,8 @@ var Reservas = sequelize.define('reservas',{
     //ID ESTADO RESERVA 
 });
 
-Mesas.hasMany(Reservas);
-Reservas.belongsTo(Mesas);
+//Mesas.hasMany(Reservas);
+///Reservas.belongsTo(Mesas);
 
 Estados.hasMany(Reservas);
 Reservas.belongsTo(Estados);

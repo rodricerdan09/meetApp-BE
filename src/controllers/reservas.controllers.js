@@ -13,12 +13,7 @@ reservasController.index=(req, res) => {
 }
 
 reservasController.list = (req, res) => {
-    Reservas.findAll({ include:
-        [
-            { model: Mesas },
-            { model: Estados }
-        ] 
-    })
+    Reservas.findAll({ include: Estados } )
     .then(reservas => res.json(reservas))
     .catch(error =>  res.status(412).json({msg: error.message}));
 }
