@@ -5,6 +5,9 @@ const route = require('../routes/locales.routes.js');
 var Locales= require('../models/locales.models.js');
 var Categorias= require('../models/categorias.models.js');
 
+
+const { QueryTypes } = require('sequelize');
+
 const localesController={};
 
 localesController.index=(req, res) => {
@@ -20,7 +23,6 @@ localesController.list = (req, res) => {
 localesController.create = (req, res) => {
     let localesBody={
         nombre: req.body.nombre,
-        tipo: req.body.tipo, 
         direccion: req.body.direccion,
         capacidad: req.body.capacidad,
         aforo: req.body.aforo,
@@ -34,7 +36,7 @@ localesController.create = (req, res) => {
 localesController.read = (req, res) => {
     let localID=parseInt(req.params.id);
     Locales.findByPk(localID, 
-        { attributes: ['id','nombre', 'tipo','direccion', 'capacidad','aforo'] })
+        { attributes: ['id','nombre', 'direccion', 'capacidad','aforo'] })
     .then(locales => res.json(locales))
     .catch(error =>res.status(412).json({msg: error.message}));
 }
@@ -42,7 +44,6 @@ localesController.read = (req, res) => {
 localesController.update = (req, res) => {
     let localesBody={
         nombre: req.body.nombre,
-        tipo: req.body.tipo, 
         direccion: req.body.direccion,
         capacidad: req.body.capacidad,
         aforo: req.body.aforo
@@ -69,5 +70,16 @@ localesController.delete = (req, res) => {
     .catch(error => res.status(412).json({msg: error.message}));
 } 
 
-module.exports=localesController;
 
+localesController.disponibilidad = (req, res) => {
+    let id = 1;
+    const query = Locales.query(`SELECT SUM( mesas.capacidad ) FROM mesas INNER JOIN locales ON locales.id = mesas.localeId WHERE locales.id = :id`
+    , { 
+         replacements: { id: 1 },
+         type: QueryTypes.SELECT })
+    .then(console.log(query))
+    .catch(error =>res.status(412).json({msg: error.message}));
+}
+ 
+
+module.exports=localesController; 

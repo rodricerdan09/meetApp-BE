@@ -17,6 +17,7 @@
     "express-jwt-authz": "^2.4.1",
     "express-session": "^1.17.2",
     "jwks-rsa": "^2.0.4",
+    "mysql2": "^2.3.0",
     "passport": "^0.4.1",
     "passport-auth0": "^1.4.0",
     "sequelize": "^6.6.2",

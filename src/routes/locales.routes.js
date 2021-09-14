@@ -10,6 +10,6 @@ localesRoute.post('/locales', localesController.create);
 localesRoute.get('/locales/:id', localesController.read);
 localesRoute.put('/locales', localesController.update);
 localesRoute.delete('/locales/:id', localesController.delete);
-
+localesRoute.get('/locales/disponibilidad', localesController.disponibilidad);
 // export routes
 module.exports = localesRoute;
