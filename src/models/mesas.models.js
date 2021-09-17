@@ -25,7 +25,7 @@ var Mesas = sequelize.define('mesas',{
         }     
     },
     disponible:{
-        type: Sequelize.BOOLEAN    
+        type: Sequelize.BOOLEAN,    
     },
     capacidad:{
         type: Sequelize.INTEGER(3),  

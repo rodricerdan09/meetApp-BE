@@ -1,6 +1,6 @@
 //database connection
 var Sequelize = require('sequelize');
-/*
+
 const db= new Sequelize({
   dialect: 'sqlite',
   define: {
@@ -8,11 +8,11 @@ const db= new Sequelize({
   },
   storage: './src/db/database.sqlite'
   });
-*/
- const db = new Sequelize('meetapp', 'root', 'toor', {
+
+/*  const db = new Sequelize('meetapp', 'root', 'toor', {
   host: '127.0.0.1',
   dialect: 'mysql',
-}); 
+});  */
 
 db.sync({force: false}) //false para produccion
     .then(()=>console.log('database is connected'))

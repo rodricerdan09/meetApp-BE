@@ -35,7 +35,7 @@ mesasController.create = (req, res) => {
 mesasController.read = (req, res) => {
     let mesaID=parseInt(req.params.id);
     Mesas.findByPk(mesaID, 
-        { attributes: ['id','numero', 'disponible', 'capacidad', 'localId'] })
+        { attributes: ['id','numero', 'disponible', 'capacidad', 'localeId'] })
     .then(mesas => res.json(mesas))
     .catch(error =>res.status(412).json({msg: error.message}));
 }

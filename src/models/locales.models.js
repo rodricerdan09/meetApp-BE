@@ -39,40 +39,6 @@ var Locales = sequelize.define('locales',{
             }
         }     
     },
-    capacidad: {
-        type: Sequelize.BIGINT(3), 
-        validate:{
-            min: {
-                args: [1],
-                msg: "El número de aforo no puede ser menor a lo admitido "
-              },                  
-            max: {
-                args: [999],
-                msg: "El número de aforo no puede ser mayor a lo admitido"
-              },
-            isInt:{
-                args:[true],
-                msg:"Solo se permite digitos númericos sin puntos ni guiones"
-            }    
-        }
-    },
-    aforo: {
-        type: Sequelize.BIGINT(3), //20383170959
-        validate:{
-            min: {
-                args: [1],
-                msg: "El número de aforo no puede ser menor a lo admitido"
-              },                  
-            max: {
-                args: [999],
-                msg: "El número de aforo no puede ser mayor a lo admitido"
-              },
-            isInt:{
-                args:[true],
-                msg:"Solo se permite digitos númericos sin puntos ni guiones"
-            }    
-        }
-    },
     
    //id gerente
 });

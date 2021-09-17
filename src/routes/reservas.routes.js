@@ -10,6 +10,7 @@ reservasRoute.post('/reservas', reservasController.create);
 reservasRoute.get('/reservas/:id', reservasController.read);
 reservasRoute.put('/reservas', reservasController.update);
 reservasRoute.delete('/reservas/:id', reservasController.delete);
+reservasRoute.get('/prueba-insert', reservasController.prueba);
 
 // export routes
 module.exports = reservasRoute;

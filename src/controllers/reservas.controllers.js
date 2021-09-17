@@ -5,6 +5,7 @@ const route = require('../routes/reservas.routes.js');
 var Reservas= require('../models/reservas.models.js');
 const Mesas = require('../models/mesas.models.js');
 const Estados = require('../models/estados.models.js');
+const { DOUBLE } = require('sequelize');
 
 const reservasController={};
 
@@ -65,6 +66,44 @@ reservasController.delete = (req, res) => {
     .then(result => res.status(200).json(success1))
     .catch(error => res.status(412).json({msg: error.message}));
 } 
+
+reservasController.prueba = (req, res) => {
+    console.log(req.body);
+    let reserva = req.body
+
+    const reservasBody = (reserva) => {
+        let result = db.transaction(transaction => 
+            db.query()
+            .then( (exito) => Reservas.create(
+                reserva,
+                {
+                    include: MesasReservas,
+                    validate: true, //cuidado
+                    transaction
+                })
+                
+            )
+            .then(reserva => res.json(reserva))
+            .catch(error => res.status(400).json({msg: error.message}))
+        )};
+
+    declaracionesJuradasController.create= (req, res) => {
+       
+        let result = sequelize.transaction( transaction => 
+        tablax.query().then(
+            exito=>Reservas.create(
+            declaracion,
+            {
+                include: Mesas_Reservas,
+                validate: true, //cuidado
+                transaction
+            })
+            
+        )
+        ) .then(reserva=>res.json(reserva))
+        .catch(error=>res.status(400).json({msg: error.message}))
+    }
+}
 
 module.exports=reservasController;
 
