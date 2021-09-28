@@ -1,62 +1,67 @@
-//import sequelize
-var Sequelize = require('sequelize');
-const route = require('../routes/categorias.routes.js');
 // import model
-var Categorias = require('../models/categorias.models.js');
+import Categorias from '../models/categorias.models.js';
+import Locales from '../models/locales.models.js';
 
-const categoriasController={};
 
-categoriasController.index=(req, res) => {
-    return res.send('<h2>Bienvenido a MeetApp<h2>');
+
+export async function listCategorias (req, res) {
+    
+    try {
+        let categorias = await Categorias.findAll({ include: Locales });
+        res.json(categorias);
+    } catch (error) {
+        res.status(412).json({msg: error.message});
+    }       
 }
 
-categoriasController.list = (req, res) => {
-    Categorias.findAll({ attributes: ['id','nombre'] })
-    .then(categorias => res.json(categorias))
-    .catch(error =>  res.status(412).json({msg: error.message}));
+export async function createCategorias (req, res) {
+    
+    try {
+        let {nombre} = req.body;
+        let categoria = await Categorias.create({nombre});
+        res.json(categoria);
+    } catch (error) {
+        res.status(400).json({msg: error.message});
+    }
 }
 
-categoriasController.create = (req, res) => {
-    let categoriasBody={
-        nombre: req.body.nombre
-    };
-    Categorias.create(categoriasBody)
-        .then(categorias=>res.json(categorias))
-        .catch(error=>res.status(400).json({msg: error.message}));
+export async function updateCategorias (req, res) {
+    let {nombre, id} = req.body;
+    let categoriasBody={nombre};
+    let categoriaID=parseInt(id);
+
+    try {
+        let result = await Categorias.findByPk(categoriaID);
+        let categoria = await result.update(categoriasBody);
+        res.json(categoria);
+    } catch (error) {
+       res.status(412).json({msg: error.message}); 
+    }
 }
 
-categoriasController.update = (req, res) => {
-    let categoriasBody={
-        nombre: req.body.nombre
-    };
-    let categoriaID=parseInt(req.params.id);
-    Categorias.findByPk(categoriaID)
-    .then(categorias=>{
-        Categorias.update(categoriasBody)
-            .then(categorias => res.json(categorias));
-        }
-        ).catch(error =>res.status(412).json({msg: error.message}));
+export async function readCategorias (req, res) {
+    let {id} = req.params;
+
+    try {
+        let categoria= await Categorias.findByPk(id, { attributes: ['id','nombre'] });
+        res.json(categoria);
+    } catch (error) {
+        res.status(412).json({msg: error.message});
+    }
 }
 
-categoriasController.read = (req, res) => {
-    let categoriaID=parseInt(req.params.id);
-    Categorias.findByPk(categoriaID, 
-        { attributes: ['id','nombre'] })
-    .then(categorias => res.json(categorias))
-    .catch(error =>res.status(412).json({msg: error.message}));
-}
-
-categoriasController.delete = (req, res) => {
-    let categoriaID=parseInt(req.params.id);
+export async function deleteCategorias (req, res) {
+    let {id} = req.params;
     let success1={
-            msg: `Categoria de id:${categoriaID} eliminado` , 
-            status: "success 1"
-        };
-    success1= JSON.stringify(success1);
-    Locales.destroy({where: {id: categoriaID}})
-    //.then(result => res.sendStatus(204))
-    .then(result => res.status(200).json(success1))
-    .catch(error => res.status(412).json({msg: error.message}));
+        "msg": `Categoria de id:${id} eliminado`, 
+        "status": "success 1"
+    };
+
+    try {
+        let result= await Categorias.destroy({where: {id}});
+        res.status(200).json(success1); 
+    } catch (error) {
+        res.status(412).json({msg: error.message});
+    }
 } 
 
-module.exports=categoriasController;

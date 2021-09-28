@@ -1,11 +1,13 @@
-var express = require('express');
-var usersRoute = express();
+import {Router} from 'express';
+let usersRoute = Router();
 // import controller
-const usersController = require('../controllers/users.controllers.js')
-const checkJwt =require('../auth/auth.js');
+import {createUsers} from '../controllers/users.controllers.js';
+import checkJwt from '../auth/auth.js';
 // create routes
-usersRoute.get('/private', checkJwt, usersController.create);
-
+usersRoute.get('/private', checkJwt, createUsers);
+usersRoute.get('/public', (req, res) => 
+    res.json({message: 'Hello from a public endpoint!'})
+);
 
 // export routes
-module.exports = usersRoute;
+export default usersRoute;

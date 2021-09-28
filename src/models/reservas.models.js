@@ -1,32 +1,54 @@
 // create model 
 //import sequelize
-var Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
 // importing connection database
-var sequelize = require('../db/db.js');
-var Comensales = require('./comensales.models.js');
+import sequelize from '../db/sequelize.js';
+import Estados from './estados.models.js';
+import Mesas from './mesas.models.js';
+import Comensales from './comensales.models.js';
+let Reservas = sequelize
+    .define('reservas',
+        { 
+            id: {
+                type: Sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true 
+            },  
+            fecha:{
+                type: Sequelize.STRING,
+                allowNull: {
+                    args:[false],
+                    msg:'No se permite fecha reserva nulo'
+                }                    
+            },
+            cantidad_reservada:{
+                type: Sequelize.INTEGER(3),
+                allowNull: {
+                    args:[false],
+                    msg:'No se permite cantidad nulo'
+                },
+                validate:{
+                    notEmpty:{
+                        args:[true],
+                        msg:"Debe indicar el numero de acompañantes"
+                    }
+                }     
+            },
+            comensaleId: {
+                type: Sequelize.INTEGER,
+                allowNull: false
+            }
 
-var Reservas = sequelize.define('reservas',{ 
-    id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true 
-    },  
-    fecha:{
-        type: Sequelize.DATE,
-        allowNull: {
-            args:[false],
-            msg:'No se permite fecha reserva nulo'
-        }                    
-    },
-    comensalId: {type: Sequelize.INTEGER}    
-   //ID ESTADO RESERVA 
-});
+            //ID ESTADO RESERVA 
+        }
+    );
 
-Comensales.hasMany(Reservas);
+//Mesas.hasMany(Reservas);
+///Reservas.belongsTo(Mesas);
 
-/* el método define() recibe como primer parámetro el nombre de la base de datos, 
-como segundo parámetro un objeto donde ponemos los atributos de nuestra tabla, donde 
-podemos especificar que tipo de dato va representar este campo.*/
+Estados.hasMany(Reservas);
+Reservas.belongsTo(Estados);
+Reservas.belongsTo(Comensales);
 
-module.exports=Reservas;
+export default Reservas;
 

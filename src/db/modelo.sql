@@ -1,0 +1,58 @@
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "comensales" (
+	"id"	INTEGER,
+	"correo"	VARCHAR(50),
+	"nombre"	VARCHAR(50),
+	"fotoUrl"	VARCHAR(100),
+	"telefono"	VARCHAR(15),
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "categorias" (
+	"id"	INTEGER,
+	"nombre"	VARCHAR(50),
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "locales" (
+	"id"	INTEGER,
+	"nombre"	VARCHAR(50),
+	"direccion"	VARCHAR(50),
+	"categoriaId"	INTEGER,
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("categoriaId") REFERENCES "categorias"("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "mesas" (
+	"id"	INTEGER,
+	"numero"	INTEGER(3),
+	"disponible"	TINYINT(1),
+	"capacidad"	INTEGER(3),
+	"piso"	INTEGER(3),
+	"fila_mesa"	INTEGER(3),
+	"columna_mesa"	INTEGER(3),
+	"localeId"	INTEGER,
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("localeId") REFERENCES "locales"("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "estados" (
+	"id"	INTEGER,
+	"nombre"	VARCHAR(50),
+	PRIMARY KEY("id" AUTOINCREMENT)
+);
+CREATE TABLE IF NOT EXISTS "reservas" (
+	"id"	INTEGER,
+	"fecha"	DATETIME,
+	"cantidad_reservada"	INTEGER(3),
+	"estadoId"	INTEGER,
+	"comensaleId"	INTEGER,
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("estadoId") REFERENCES "estados"("id") ON DELETE SET NULL ON UPDATE CASCADE,
+	FOREIGN KEY("comensaleId") REFERENCES "comensales"("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "mesas_reservas" (
+	"id"	INTEGER,
+	"mesaId"	INTEGER,
+	"reservaId"	INTEGER,
+	PRIMARY KEY("id" AUTOINCREMENT),
+	FOREIGN KEY("mesaId") REFERENCES "mesas"("id") ON DELETE SET NULL ON UPDATE CASCADE,
+	FOREIGN KEY("reservaId") REFERENCES "reservas"("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+COMMIT;

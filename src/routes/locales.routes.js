@@ -1,15 +1,23 @@
-var express = require('express');
-var localesRoute = express();
+import {Router} from 'express';
+let localesRoute = Router();
 // import controller
-const localesController = require('../controllers/locales.controllers.js')
+import {
+    listLocales, 
+    createLocales, 
+    readLocales, 
+    updateLocales, 
+    deleteLocales, 
+    disponibilidadLocales
+} from '../controllers/locales.controllers.js';
 
 // create routes
-localesRoute.get('/', localesController.index);
-localesRoute.get('/locales', localesController.list);
-localesRoute.post('/locales', localesController.create);
-localesRoute.get('/locales/:id', localesController.read);
-localesRoute.put('/locales', localesController.update);
-localesRoute.delete('/locales/:id', localesController.delete);
+
+localesRoute.get('/locales', listLocales);
+localesRoute.post('/locales', createLocales);
+localesRoute.get('/locales/:id', readLocales);
+localesRoute.put('/locales', updateLocales);
+localesRoute.delete('/locales/:id', deleteLocales);
+localesRoute.get('/disponibilidad/:fecha', disponibilidadLocales);
 
 // export routes
-module.exports = localesRoute;
+export default localesRoute;

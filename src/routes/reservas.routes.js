@@ -1,15 +1,22 @@
-var express = require('express');
-var reservasRoute = express();
+import {Router} from'express';
+let reservasRoute = Router();
 // import controller
-const reservasController = require('../controllers/reservas.controllers.js')
+import {
+    listReservas, 
+    createReservas,
+    readReservas,
+    updateReservas,
+    deleteReservas,
+    pruebaReservas
+} from '../controllers/reservas.controllers.js';
 
 // create routes
-reservasRoute.get('/', reservasController.index);
-reservasRoute.get('/reservas', reservasController.list);
-reservasRoute.post('/reservas', reservasController.create);
-reservasRoute.get('/reservas/:id', reservasController.read);
-reservasRoute.put('/reservas', reservasController.update);
-reservasRoute.delete('/reservas/:id', reservasController.delete);
+reservasRoute.get('/reservas', listReservas);
+reservasRoute.post('/reservas', createReservas);
+reservasRoute.get('/reservas/:id', readReservas);
+reservasRoute.patch('/reservas/:id', updateReservas);
+reservasRoute.delete('/reservas/:id', deleteReservas);
+reservasRoute.post('/prueba-insert', pruebaReservas);
 
 // export routes
-module.exports = reservasRoute;
+export default  reservasRoute;

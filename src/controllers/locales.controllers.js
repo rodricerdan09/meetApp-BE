@@ -1,70 +1,55 @@
 //import sequelize
-var Sequelize = require('sequelize');
-const route = require('../routes/locales.routes.js');
+import { QueryTypes, Op, literal }  from 'sequelize';
+import sequelize from '../db/sequelize';
 // import model
-var Locales= require('../models/locales.models.js');
-var Categorias= require('../models/categorias.models.js');
+import Locales from '../models/locales.models.js';
+import Categorias from '../models/categorias.models.js';
+import Mesas from './../models/mesas.models';
+import Reservas from '../models/reservas.models';
+import MesasReservas from '../models/mesas.reservas.models';
 
-const localesController={};
 
-localesController.index=(req, res) => {
-    return res.send('<h2>Bienvenido a MeetApp<h2>');
-}
 
-localesController.list = (req, res) => {
-    let query=req.query;
-    Locales.findAll({ 
-        attributes: ['id','nombre','direccion', 'capacidad','aforo'],
-        where: query,
-        include: [
-            {
-                model: Categorias, as: 'categorias',
-                attributes: [['nombre', 'categoria']]
-            },
-        ]
-    })
+export function listLocales (req, res)  {
+    Locales.findAll({ include: Categorias })
     .then(locales => res.json(locales))
     .catch(error =>  res.status(412).json({msg: error.message}));
 }
 
-localesController.create = (req, res) => {
+export function createLocales (req, res)  {
     let localesBody={
         nombre: req.body.nombre,
-        tipo: req.body.tipo, 
         direccion: req.body.direccion,
         capacidad: req.body.capacidad,
-        aforo: req.body.aforo
     };
     Locales.create(localesBody)
         .then(locales=>res.json(locales))
         .catch(error=>res.status(400).json({msg: error.message}));
 }
 
-localesController.read = (req, res) => {
+export function readLocales (req, res)  {
     let localID=parseInt(req.params.id);
     Locales.findByPk(localID, 
-        { attributes: ['id','nombre','direccion', 'capacidad','aforo'] })
+        { attributes: ['id','nombre', 'direccion'] })
     .then(locales => res.json(locales))
     .catch(error =>res.status(412).json({msg: error.message}));
 }
 
-localesController.update = (req, res) => {
+export function updateLocales (req, res)  {
     let localesBody={
         nombre: req.body.nombre,
         direccion: req.body.direccion,
-        capacidad: req.body.capacidad,
-        aforo: req.body.aforo
     };
     let localID=parseInt(req.params.id);
     Locales.findByPk(localID)
     .then(locales=>{
-            Locales.update( LocalesBody)
+            Locales.update(LocalesBody)
             .then(local => res.json(local));
         }
         ).catch(error =>res.status(412).json({msg: error.message}));
 }
 
-localesController.delete = (req, res) => {
+export function deleteLocales (req, res)  {
     let localID=parseInt(req.params.id);
     let success1={
             msg: `Local de id:${localID} eliminado` , 
@@ -77,5 +62,115 @@ localesController.delete = (req, res) => {
     .catch(error => res.status(412).json({msg: error.message}));
 } 
 
-module.exports=localesController;
+
+export async  function disponibilidadLocales (req, res)  {
+    let {fecha}=req.params;
+    console.log(fecha)
+    //let fecha="2021-10-21";
+    try {
+        let capacidad= await Locales
+            .findAll(
+                {
+                    attributes:["id","nombre","direccion"],
+                    include:[
+                        
+                        {
+                            model:Categorias,
+                            required: true,
+                            attributes:["nombre"]
+                        },
+                        {
+                            model:Mesas,
+                            required: true,
+                            attributes:[
+                                [literal('SUM (mesas.capacidad)'), 'capacidad']
+                            ],
+                            where: {
+                                disponible: {[Op.not]: null}
+                            }
+                        }
+                        
+                    ],
+                    group: ['categoria.nombre' , 'locales.nombre'],
+                    raw: true, //true sin formato
+                    //order: literal('declaracionesjuradas.year , declaracionesjuradas.month, empresas.rubro,empresas.cuit ,Ventas.denominacion DESC') 
+                    
+                }
+            )
+
+        let ocupado= await Locales.findAll(
+            {
+                attributes:["id"],
+                include:[
+                    
+                    {
+                        model:Categorias,
+                        required: true,
+                        attributes:["nombre"]
+                    },
+                    {
+                        model:Mesas,
+                        required: true,
+                        attributes:[
+                            [literal('SUM (mesas.capacidad)'), 'ocupado']
+                        ],
+                        where: {
+                            disponible: {[Op.not]: null}
+                    },
+                        include:[
+                            {
+                                model: MesasReservas,
+                                attributes:["id"],
+                                required: true, 
+                                include:[
+                                    {
+                                        model: Reservas,
+                                        attributes:["fecha"],
+                                        where: {fecha},
+                                        required: true,
+                                    }
+                                ]
+                            }
+                            
+                        ]   
+                    }
+                    
+                ],
+                group: ['categoria.nombre' , 'locales.nombre'],
+                raw:true, //true sin formato
+                //order: literal('declaracionesjuradas.year , declaracionesjuradas.month, empresas.rubro,empresas.cuit ,Ventas.denominacion DESC') 
+                
+            }
+        )
+        let capacidadTotal = capacidad
+            .map( local =>
+                {   let {id, nombre,direccion}=local;
+                    let categoria = local['categoria.nombre'];
+                    let capacidadDelLocal=local['mesas.capacidad'];
+                    
+                    let lugaresOcupados=0;
+                    let buscarLugarOcupado=ocupado.find(lugar => lugar.id === local.id);
+                    if (buscarLugarOcupado) {
+                        
+                        lugaresOcupados=buscarLugarOcupado['mesas.ocupado'];
+                    } 
+                    
+                    let porcentajeOcupado=parseInt((lugaresOcupados*100)/capacidadDelLocal);
+                    return {
+                        id,
+                        nombre,
+                        direccion, 
+                        categoria,
+                        capacidadDelLocal,
+                        lugaresOcupados,
+                        porcentajeOcupado
+                    }
+                }
+            );
+        res.json(capacidadTotal)
+    } catch (error) {
+        res.status(412).json({msg: error.message})
+    }
+}
+ 
 

@@ -1,15 +1,22 @@
-var express = require('express');
-var mesasRoute = express();
+import {Router} from 'express';
+let mesasRoute = Router();
 // import controller
-const mesasController = require('../controllers/mesas.controllers.js')
+import{
+    listMesas,
+    cantidadDePisos,
+    createMesas, 
+    readMesas,
+    updateMesas, 
+    deleteMesas
+} from '../controllers/mesas.controllers.js';
 
 // create routes
-mesasRoute.get('/', mesasController.index);
-mesasRoute.get('/mesas', mesasController.list);
-mesasRoute.post('/mesas', mesasController.create);
-mesasRoute.get('/mesas/:id', mesasController.read);
-mesasRoute.put('/mesas', mesasController.update);
-mesasRoute.delete('/mesas/:id', mesasController.delete);
+mesasRoute.get('/local/:nombre/piso/:piso/mesas/', listMesas);
+mesasRoute.get('/cantidad-de-pisos/local/:nombre/', cantidadDePisos);
+mesasRoute.post('/mesas', createMesas);
+mesasRoute.get('/mesas/:id', readMesas);
+mesasRoute.put('/mesas', updateMesas);
+mesasRoute.delete('/mesas/:id', deleteMesas);
 
 // export routes
-module.exports = mesasRoute;
+export default  mesasRoute;

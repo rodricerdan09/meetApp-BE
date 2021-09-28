@@ -1,11 +1,11 @@
-var dotenv = require('dotenv');
-dotenv.config();
-
+//import dotenv from 'dotenv';
+//dotenv.config();
+import 'dotenv/config';
 //JWT
-const jwt = require('express-jwt');
-const jwtAuthz = require('express-jwt-authz');
-const jwksRsa = require('jwks-rsa');
-
+import jwt from 'express-jwt';
+import jwtAuthz from 'express-jwt-authz';
+import jwksRsa from 'jwks-rsa';
+                
 // Authorization middleware. When used, the
 // Access Token must exist and be verified against
 // the Auth0 JSON Web Key Set
@@ -26,4 +26,4 @@ const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
-module.exports= checkJwt; 
+export default checkJwt; 

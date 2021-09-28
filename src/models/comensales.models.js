@@ -1,10 +1,10 @@
 // create model 
 //import sequelize
-var Sequelize = require('sequelize');
+import  Sequelize from 'sequelize';
 // importing connection database
-var sequelize = require('../db/db.js');
+import sequelize from '../db/sequelize.js';
 
-var Comensales = sequelize.define('comensales',{ 
+let  Comensales = sequelize.define('comensales',{ 
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -58,5 +58,5 @@ var Comensales = sequelize.define('comensales',{
 como segundo parámetro un objeto donde ponemos los atributos de nuestra tabla, donde 
 podemos especificar que tipo de dato va representar este campo.*/
 
-module.exports=Comensales;
+export default Comensales;
 
